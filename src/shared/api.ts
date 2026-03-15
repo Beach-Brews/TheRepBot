@@ -1,18 +1,16 @@
-export type InitResponse = {
-  type: 'init';
-  postId: string;
-  count: number;
-  username: string;
+export type ApiResponse<T> = {
+    status: 'error' | 'ok';
+    message: string;
+    data?: T;
 };
 
-export type IncrementResponse = {
-  type: 'increment';
-  postId: string;
-  count: number;
+export type LeaderboardEntry = {
+    username: string;
+    score: number;
 };
 
-export type DecrementResponse = {
-  type: 'decrement';
-  postId: string;
-  count: number;
+export type LeaderboardData = {
+    helpUrl: string | undefined;
+    pointName: string | undefined;
+    entries: LeaderboardEntry[];
 };
