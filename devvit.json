@@ -1,7 +1,22 @@
 {
+    "$schema": "https://developers.reddit.com/schema/config-file.v1.json",
     "name": "therepbot",
+    "post": {
+        "dir": "dist/client",
+        "entrypoints": {
+            "default": {
+                "inline": true,
+                "entry": "leaderboard.html",
+                "height": "tall"
+            }
+        }
+    },
+    "server": {
+        "dir": "dist/server",
+        "entry": "index.cjs"
+    },
     "blocks": {
-        "entry": "src/main.tsx",
+        "entry": "src/main.ts",
         "triggers": [
             "onPostSubmit",
             "onCommentSubmit",
@@ -11,15 +26,6 @@
         ]
     },
     "media": {
-        "dir": "assets/"
-    },
-    "post": {
-        "dir": "src/customPost/",
-        "entrypoints": {
-            "default": {
-                "entry": "index.tsx",
-                "height": "tall"
-            }
-        }
+        "dir": "assets"
     }
 }
