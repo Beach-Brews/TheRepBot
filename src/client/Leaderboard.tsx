@@ -1,6 +1,6 @@
 import './index.css';
 
-import {StrictMode, useCallback, useEffect, useState} from 'react';
+import {StrictMode, useEffect, useState} from 'react';
 import { createRoot } from 'react-dom/client';
 import {LeaderboardRow} from "./LeaderboardRow";
 import pluralize from "pluralize";
@@ -14,17 +14,16 @@ const capitalize = (word: string): string => {
 export const Leaderboard = () => {
     const [data, setData] = useState<LeaderboardData | undefined>(undefined);
 
-    const refreshLeaderboard = useCallback(async () => {
-        setData(undefined);
-        const res = await fetch('/api/getLeaderboard');
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const resJson: LeaderboardData = await res.json();
-        setData(resJson);
-    }, [setData]);
-
     useEffect(() => {
+        if (data) return;
+        const refreshLeaderboard = async () => {
+            const res = await fetch('/api/getLeaderboard');
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            const resJson: LeaderboardData = await res.json();
+            setData(resJson);
+        };
         void refreshLeaderboard();
-    }, [setData]);
+    }, [data]);
 
     if (!data) {
         return (
@@ -49,7 +48,7 @@ export const Leaderboard = () => {
                     <img alt="podium" width={48} height={48} src="podium.png" />
                 )}
             </div>
-            <button onClick={refreshLeaderboard}>Refresh (https://heroicons.com/solid)</button>
+            <button onClick={() => setData(undefined)}>Refresh (https://heroicons.com/solid)</button>
             <div className="flex flex-col p-2 gap-2 w-full">
                 <div className="w-full flex gap-2">
                     {entries.map((entry, i) => (
