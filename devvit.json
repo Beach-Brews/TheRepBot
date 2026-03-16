@@ -16,7 +16,7 @@
         "entry": "index.cjs"
     },
     "blocks": {
-        "entry": "src/main.ts",
+        "entry": "src/blocks/main.ts",
         "triggers": [
             "onPostSubmit",
             "onCommentSubmit",

@@ -5,7 +5,7 @@ import { createRoot } from 'react-dom/client';
 import {LeaderboardRow} from "./LeaderboardRow";
 import pluralize from "pluralize";
 import { navigateTo } from '@devvit/web/client';
-import { LeaderboardData } from '../shared/api';
+import {ApiResponse, LeaderboardData} from '../shared/api';
 
 const capitalize = (word: string): string => {
     return word.charAt(0).toUpperCase() + word.slice(1);
@@ -19,8 +19,8 @@ export const Leaderboard = () => {
         const refreshLeaderboard = async () => {
             const res = await fetch('/api/getLeaderboard');
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
-            const resJson: LeaderboardData = await res.json();
-            setData(resJson);
+            const resJson: ApiResponse<LeaderboardData> = await res.json();
+            setData(resJson.data);
         };
         void refreshLeaderboard();
     }, [data]);
