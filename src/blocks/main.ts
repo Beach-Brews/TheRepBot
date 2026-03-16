@@ -12,11 +12,6 @@ import { onAppFirstInstall, onAppInstallOrUpgrade } from "./installEvents";
 import { updateLeaderboard } from "./leaderboard";
 import { cleanupDeletedAccounts } from "./cleanupTasks";
 import {
-    createCustomPostMenuHandler,
-    customPostForm,
-    createCustomPostFormHandler,
-} from "./customPost";
-import {
     ADHOC_CLEANUP_JOB,
     ADHOC_POST_OF_THE_MONTH_JOB,
     CLEANUP_JOB,
@@ -101,13 +96,6 @@ export const manualPostRestrictionRemovalForm = Devvit.createForm(
 );
 
 Devvit.addMenuItem({
-    label: "Submit Leaderboard Post",
-    forUserType: "moderator",
-    location: "subreddit",
-    onPress: createCustomPostMenuHandler,
-});
-
-Devvit.addMenuItem({
     label: "Remove post restriction from user",
     forUserType: "moderator",
     location: "post",
@@ -148,11 +136,6 @@ Devvit.addMenuItem({
     onPress: handleManualPointSetting,
 });
 
-export const customPostFormKey = Devvit.createForm(
-    customPostForm,
-    createCustomPostFormHandler
-);
-
 export async function handleCommentPin(
     event: MenuItemOnPressEvent,
     context: Context
@@ -191,7 +174,7 @@ export async function handleCommentPin(
             context.ui.showToast({
                 text: "Only top-level comments can be pinned.",
             });
-            logger.error(`❌ Attempted to pin comment that isn't top-level`);
+            await logger.error(`❌ Attempted to pin comment that isn't top-level`);
             return;
         }
 
@@ -199,7 +182,7 @@ export async function handleCommentPin(
 context.ui.showToast({
                 text: "This comment is already pinned.",
             });
-            logger.error(`❌ Attempted to pin comment that is already stickied`);
+            await logger.error(`❌ Attempted to pin comment that is already stickied`);
             return;
         }
         await comment.distinguish(true);
@@ -212,7 +195,7 @@ context.ui.showToast({
             commentId: comment.id,
         });
     } catch (err) {
-        logger.error("❌ Failed to pin comment", {
+        await logger.error("❌ Failed to pin comment", {
             commentId: event.targetId,
             error: String(err),
         });
